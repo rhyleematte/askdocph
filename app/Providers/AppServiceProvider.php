@@ -25,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if (app()->environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         View::composer('partials.daily_affirmation_panel', function ($view) {
             $view->with('currentDailyAffirmation', DailyAffirmation::current());
         });
