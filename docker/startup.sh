@@ -12,6 +12,11 @@ php artisan cache:clear
 php artisan view:clear
 php artisan route:clear
 
+# Environment Variable Discovery (Keys Only for Security)
+echo "--- Environment Variable Discovery ---"
+export | cut -d= -f1 | grep -E "DB_|MYSQL|DATABASE|RAILWAY"
+echo "--------------------------------------"
+
 # Database Connectivity Test
 echo "Testing Database Connection..."
 php -r '
@@ -28,6 +33,13 @@ php -r '
         echo "✅ Connection Successful!\n";
     } catch (Exception $e) {
         echo "❌ Connection Failed: " . $e->getMessage() . "\n";
+        echo "Attempting Fallback to mysql.railway.internal...\n";
+        try {
+             $pdo = new PDO("mysql:host=mysql.railway.internal;port=3306;dbname=$db", $user, $pass, [PDO::ATTR_TIMEOUT => 2]);
+             echo "✅ Fallback Connection Successful!\n";
+        } catch (Exception $e2) {
+             echo "❌ Fallback Failed too.\n";
+        }
     }
 '
 
