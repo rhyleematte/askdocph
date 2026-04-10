@@ -1,0 +1,12 @@
+# Define the build phases for Railway (Nixpacks)
+[phases.setup]
+nixPkgs = ["php81", "nodejs", "composer"]
+
+[phases.install]
+cmds = ["composer install", "npm install"]
+
+[phases.build]
+cmds = ["npm run prod"]
+
+[start]
+cmd = "php artisan serve --host 0.0.0.0 --port $PORT"

@@ -1,0 +1,89 @@
+ALGORITHM: track_topics_and_connections(message, topic_graph, user_context)
+
+INPUT:
+    - message: user's text
+    - topic_graph: existing topic relationships
+    - user_context: user's history
+
+OUTPUT: updated topic_graph with new connections
+
+STEPS:
+
+1. IDENTIFY topics in current message:
+
+   topic_keywords = {
+       "anxiety": ["anxious", "worry", "nervous", "panic", "fear"],
+       "depression": ["sad", "depressed", "hopeless", "empty", "mood"],
+       "sleep": ["sleep", "insomnia", "tired", "exhausted", "rest"],
+       "relationships": ["relationship", "friend", "partner", "alone", "lonely"],
+       "work": ["work", "job", "career", "boss", "colleague"],
+       "self_esteem": ["worth", "confidence", "value", "insecurity"],
+       "trauma": ["trauma", "abuse", "hurt", "painful", "past"],
+       "coping": ["cope", "handle", "deal", "manage", "strategy"]
+   }
+
+   detected_topics = []
+   for topic, keywords in topic_keywords:
+       if any(keyword in message.lower() for keyword in keywords):
+           detected_topics.append({
+               "topic": topic,
+               "confidence": calculate_match_confidence(message, keywords),
+               "keywords_matched": matched_keywords
+           })
+
+2. UPDATE topic_graph with new topics:
+   For each detected_topic:
+       - Add to graph if new
+       - Increment mention_count
+       - Update last_discussed timestamp
+       - Record intensity based on emotional_tone
+
+3. FIND connections between topics:
+   
+   For each pair of topics mentioned in same message or nearby:
+       - Calculate connection_strength based on:
+           * Co-occurrence frequency
+           * Temporal proximity (mentioned close together)
+           * Emotional intensity of mentions
+       
+       connection_strength = (co_occurrence_count / total_mentions) * 
+                             (1 + avg_emotional_intensity)
+
+       Add or strengthen edge between topics
+
+4. IDENTIFY patterns:
+
+   pattern_examples = [
+       "anxiety always precedes sleep issues",
+       "work stress triggers relationship anxiety",
+       "coping strategies mentioned after anxiety spikes"
+   ]
+
+   For each pattern detected:
+       - Add to topic_graph.patterns
+       - Track frequency and confidence
+
+5. UPDATE follow_up_queue:
+
+   IF topic mentioned but not explored (low depth):
+       follow_up_queue.add({
+           "topic": topic,
+           "reason": "needs_exploration",
+           "priority": "medium"
+       })
+
+   IF topic connected to sensitive_area and user opened up:
+       follow_up_queue.add({
+           "topic": connection,
+           "reason": "potential_underlying_issue",
+           "priority": "high"
+       })
+
+   IF pattern detected that needs attention:
+       follow_up_queue.add({
+           "topic": pattern_related,
+           "reason": "observed_pattern",
+           "priority": "high"
+       })
+
+6. RETURN updated topic_graph

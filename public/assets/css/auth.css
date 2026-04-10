@@ -1,0 +1,296 @@
+:root {
+    --teal: #0c8f98;
+    --teal-dark: #0a7f87;
+    --text: #0f172a;
+    --muted: #64748b;
+    --border: #dbe3ee;
+    --bg: #f6f9fc;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* NAVBAR */
+.topbar {
+    height: 72px;
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    height: 28px;
+}
+
+.brand-text small {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 600;
+}
+
+.btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 700;
+}
+
+.signup-btn {
+    background: var(--teal);
+    color: white;
+}
+
+.signup-btn:hover {
+    background: var(--teal-dark);
+}
+
+/* LAYOUT */
+.wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 72px);
+}
+
+/* LEFT */
+.left {
+    display: flex;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.card {
+    width: 440px;
+    background: white;
+    padding: 38px 34px;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
+}
+
+h1 {
+    font-size: 40px;
+    margin-bottom: 6px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 26px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    margin: 18px 0;
+}
+
+.divider span {
+    flex: 1;
+    height: 1px;
+    background: #e8eef6;
+}
+
+.form label {
+    display: block;
+    margin: 14px 0 8px;
+    font-weight: 700;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    background: white;
+    margin-bottom: 14px;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 14px;
+}
+
+/* Lucide icons */
+.input-group i {
+    width: 18px;
+    height: 18px;
+    color: var(--muted);
+    margin-right: 10px;
+}
+
+.toggle {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0 18px;
+}
+
+.check {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.link {
+    font-size: 13px;
+    color: var(--teal);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.primary {
+    width: 100%;
+    background: var(--teal);
+    color: white;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.primary:hover {
+    background: var(--teal-dark);
+}
+
+/* RIGHT */
+.right {
+    background: var(--teal);
+    color: white;
+    padding: 60px 44px;
+}
+
+.right h2 {
+    font-size: 38px;
+    margin-bottom: 26px;
+}
+
+.feature {
+    display: flex;
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge i {
+    width: 22px;
+    height: 22px;
+}
+
+.quote {
+    margin-top: 26px;
+    background: rgba(0, 0, 0, .1);
+    padding: 18px;
+    border-radius: 14px;
+    font-size: 13px;
+}
+
+@media(max-width:980px) {
+    .wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .right {
+        display: none;
+    }
+}
+
+.has-error {
+    border: 1px solid #ef4444 !important;
+}
+
+.error {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: -6px;
+    margin-bottom: 10px;
+}
+
+.toggle i {
+    transition: transform .2s ease;
+}
+
+.toggle:active i {
+    transform: scale(0.85);
+}
+
+.hidden {
+    display: none;
+}
+
+.switch {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.switch-btn {
+    border: none;
+    background: none;
+    color: var(--teal);
+    font-weight: 800;
+    cursor: pointer;
+    padding: 0;
+}
+
+.switch {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.switch a {
+    color: var(--teal);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.switch a:hover {
+    text-decoration: underline;
+}

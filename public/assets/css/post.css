@@ -1,0 +1,48 @@
+.single-post-body {
+  grid-template-columns: 1fr;
+  max-width: 900px;
+}
+
+.single-post-main {
+  gap: 18px;
+}
+
+.single-post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.context-link {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.context-link:hover {
+  color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .single-post-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

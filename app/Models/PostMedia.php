@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class PostMedia extends Model
+{
+    protected $fillable = ['post_id', 'media_type', 'path', 'mime_type', 'size_bytes', 'sort_order'];
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+}

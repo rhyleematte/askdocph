@@ -1,0 +1,141 @@
+ALGORITHM: detect_and_respond_to_crisis(message, user_context, rapport_state)
+
+INPUT:
+    - message: user's current message
+    - user_context: user's history
+    - rapport_state: current relationship stage
+
+OUTPUT: crisis_level and appropriate_response_protocol
+
+STEPS:
+
+1. SCAN for crisis keywords and phrases:
+
+   crisis_indicators = {
+       "immediate_danger": [
+           "kill myself", "end my life", "want to die", 
+           "suicide", "ending it all", "no reason to live"
+       ],
+       "self_harm": [
+           "cutting", "hurt myself", "self harm", 
+           "self-injury", "harm myself"
+       ],
+       "hopelessness": [
+           "can't go on", "give up", "no hope", 
+           "never get better", "pointless"
+       ],
+       "isolation": [
+           "no one cares", "alone", "no one understands",
+           "everyone would be better without me"
+       ]
+   }
+
+   detected_indicators = []
+   for category, phrases in crisis_indicators:
+       for phrase in phrases:
+           if phrase in message.lower():
+               detected_indicators.append({
+                   "category": category,
+                   "phrase": phrase,
+                   "severity": category_severity[category]
+               })
+
+2. CALCULATE crisis_level:
+
+   IF any indicator in "immediate_danger":
+       crisis_level = "CRITICAL"
+       confidence = 1.0
+   
+   ELSE IF multiple indicators across categories:
+       crisis_level = "HIGH"
+       confidence = 0.8 + (0.1 * number_of_indicators)
+   
+   ELSE IF any indicator in other categories:
+       crisis_level = "MODERATE"
+       confidence = 0.6
+   
+   ELSE:
+       crisis_level = "NONE"
+       confidence = 0.0
+
+3. CHECK escalation_factors:
+
+   escalation_score = 0
+   
+   IF user_context.sensitive_topics_history.mentions_increasing:
+       escalation_score += 0.2
+   
+   IF rapport_state.stage in ["established", "deep"]:
+       escalation_score += 0.1  # more trust = more serious
+   
+   IF message_length > 100 and crisis_indicators:
+       escalation_score += 0.1  # detailed crisis description
+   
+   IF user has mentioned feeling worse over time:
+       escalation_score += 0.2
+
+   Adjust crisis_level based on escalation_score
+
+4. DETERMINE response_protocol:
+
+   IF crisis_level == "CRITICAL":
+       protocol = {
+           "immediate": true,
+           "style": "direct_and_caring",
+           "resources": "emergency_contacts",
+           "stay_online": true,
+           "professional_referral": "immediate",
+           "message": """
+               I'm very concerned about what you're sharing. 
+               Your safety is the most important thing right now.
+               
+               Please reach out immediately to:
+               - Emergency Services: 112
+               - AASRA Suicide Prevention: 91-9820466726
+               - Vandrevala Foundation: 9999666555
+               
+               I'm here with you. Would you like to talk while you reach out?
+           """
+       }
+   
+   ELSE IF crisis_level == "HIGH":
+       protocol = {
+           "immediate": true,
+           "style": "concerned_and_supportive",
+           "resources": "helpline_numbers",
+           "professional_referral": "strongly_encourage",
+           "message": """
+               I hear how much pain you're in right now. 
+               You don't have to go through this alone.
+               
+               These helplines have people trained to support you:
+               - AASRA: 91-9820466726
+               - iCall: 9152987821
+               
+               Would you like to explore some immediate coping strategies together?
+           """
+       }
+   
+   ELSE IF crisis_level == "MODERATE":
+       protocol = {
+           "immediate": false,
+           "style": "gentle_and_validating",
+           "resources": "mental_health_resources",
+           "professional_referral": "suggest_consider",
+           "message": """
+               Thank you for sharing how difficult things feel.
+               Many people find it helpful to talk to a professional 
+               when they're going through a tough time.
+               
+               Would you like me to share some resources, or would you 
+               prefer to keep talking about what's on your mind?
+           """
+       }
+
+5. UPDATE user_context:
+   - Record crisis detection
+   - Note resources shared
+   - Flag for follow-up (check on user later)
+   - Set professional_help_suggested = true if applicable
+
+6. RETURN protocol with crisis_level and appropriate_response

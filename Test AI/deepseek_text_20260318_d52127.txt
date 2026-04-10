@@ -1,0 +1,103 @@
+ALGORITHM: optimize_conversation_flow(conversation_graph, user_context, current_message)
+
+INPUT:
+    - conversation_graph: full conversation history
+    - user_context: user preferences
+    - current_message: most recent message
+
+OUTPUT: flow_optimization recommendations
+
+STEPS:
+
+1. ANALYZE conversation rhythm:
+
+   metrics = {
+       "turn_taking_rate": calculate_turns_per_minute(),
+       "avg_response_delay": calculate_avg_response_time(),
+       "message_length_trend": increasing_or_decreasing(),
+       "question_answer_ratio": count_questions_and_answers(),
+       "topic_switching_frequency": how_often_topics_change()
+   }
+
+2. DETECT flow issues:
+
+   potential_issues = []
+
+   IF metrics.turn_taking_rate < 0.5:  # slow conversation
+       potential_issues.append({
+           "type": "disengagement",
+           "severity": 0.7,
+           "solution": "use_more_engaging_questions"
+       })
+
+   IF metrics.avg_response_delay > 120:  # 2 minutes
+       potential_issues.append({
+           "type": "hesitation",
+           "severity": 0.5,
+           "solution": "provide_more_encouragement"
+       })
+
+   IF metrics.topic_switching_frequency > 0.8:  # jumping topics
+       potential_issues.append({
+           "type": "scattered",
+           "severity": 0.6,
+           "solution": "gently_guide_back_to_previous_topics"
+       })
+
+   IF user_context.communication_patterns.self_disclosure_rate < 0.2:
+       potential_issues.append({
+           "type": "guarded",
+           "severity": 0.4,
+           "solution": "build_more_trust_before_probing"
+       })
+
+3. OPTIMIZE for next response:
+
+   optimizations = {
+       "response_timing": calculate_optimal_delay(metrics),
+       "message_length": target_length_based_on_engagement,
+       "question_style": determine_question_style(user_context),
+       "topic_guidance": topic_focus_recommendation
+   }
+
+   Where:
+   - optimal_delay = min(5 + (message_length * 0.3), 15) seconds
+   - target_length = match user's preferred length ± 20%
+   - question_style = open_ended if rapport > 60 else closed_ended
+
+4. SUGGEST conversation_deepening techniques:
+
+   deepening_techniques = [
+       {
+           "technique": "reflection",
+           "use_when": "user_shares_feeling",
+           "example": "It sounds like you're feeling...",
+           "effectiveness_score": 0.8
+       },
+       {
+           "technique": "normalization",
+           "use_when": "user_feels_alone",
+           "example": "Many people experience...",
+           "effectiveness_score": 0.7
+       },
+       {
+           "technique": "gentle_probe",
+           "use_when": "rapport_established",
+           "example": "What was that like for you?",
+           "effectiveness_score": 0.6
+       },
+       {
+           "technique": "connection_building",
+           "use_when": "multiple_topics",
+           "example": "I notice when you talk about X, you also mention Y...",
+           "effectiveness_score": 0.9
+       }
+   ]
+
+   Select technique based on current_context and effectiveness_score
+
+5. RETURN flow_optimization recommendations:
+   - Next_response_strategy
+   - Optimal_timing
+   - Suggested_techniques
+   - Topics_to_emphasize_or_avoid

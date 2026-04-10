@@ -1,0 +1,51 @@
+ALGORITHM: detect_emotional_tone(message, conversation_context)
+
+INPUT: 
+    - message: user's text
+    - conversation_context: recent messages
+
+OUTPUT: emotional_tone with confidence score
+
+STEPS:
+
+1. TOKENIZE message into words and phrases
+
+2. CHECK against emotion_keyword_library:
+
+   emotion_library = {
+       "sadness": ["sad", "depressed", "down", "hopeless", "miserable", "empty"],
+       "anxiety": ["anxious", "worried", "scared", "fear", "panic", "nervous"],
+       "anger": ["angry", "frustrated", "mad", "annoyed", "irritated"],
+       "hopeful": ["hopeful", "better", "improving", "optimistic", "positive"],
+       "confusion": ["confused", "unsure", "don't know", "uncertain"],
+       "relief": ["relieved", "better", "lighter", "free"],
+       "gratitude": ["thank", "appreciate", "grateful", "helpful"]
+   }
+
+   For each emotion, count keyword_matches
+   Calculate raw_score = matches / total_words
+
+3. ANALYZE sentence_structure:
+   - Questions indicate confusion or seeking help
+   - Exclamations indicate strong emotion
+   - Short sentences may indicate distress
+   - Long sentences may indicate processing/thinking
+
+4. CONSIDER context from previous messages:
+   - Compare with recent emotional_tone
+   - Check for emotional_shifts (sudden change from calm to anxious)
+   - Look for topic_triggers (work mention + anxiety words)
+
+5. CALCULE confidence score:
+   confidence = (keyword_score * 0.6) + 
+                (structure_score * 0.2) + 
+                (context_score * 0.2)
+
+6. RETURN:
+   {
+       "primary_emotion": "anxiety",
+       "confidence": 0.85,
+       "secondary_emotions": ["frustration", "confusion"],
+       "intensity": 0.7,  # 0-1 scale
+       "trigger_topics": ["work", "deadline"]
+   }

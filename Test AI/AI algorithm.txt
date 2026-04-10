@@ -1,0 +1,18 @@
+The chatbot now utilizes a suite of intelligent algorithms designed to create a deeply empathetic, safe, and context-aware conversational experience, directly inspired by the guidelines you provided. Here are the core algorithms actively running in the chatbot:
+
+Emotional Tone Detection
+
+How it works: The AI actively analyzes the language, phrasing, and subtext of every message to detect your underlying primary emotion (e.g., Anxiety, Sadness, Relief, Frustration, Neutral).
+Purpose: It allows the bot to tailor its tone dynamically, ensuring it remains empathetic and matches your emotional state rather than acting like a cold, robotic screener.
+Topic Tracking & Context Management
+
+How it works: The AI continuously extracts and tracks the key themes or subjects being discussed (e.g., work stress, family issues, sleep problems).
+Purpose: It maintains a "memory" of the conversation flow, allowing the bot to ask relevant follow-up questions and connect current feelings to past topics seamlessly.
+Crisis Detection & Escalation Protocol
+
+How it works: A strict safeguard layer that scans inputs for critical danger keywords (like suicide, self-harm, or severe hopelessness).
+Purpose: If an immediate crisis is detected, the AI will bypass normal conversation and immediately trigger emergency response protocols, providing immediate support hotlines and resources.
+Strategic Professional Matching (Doctor Suggestion)
+
+How it works: Instead of throwing doctor recommendations randomly, the AI evaluates the ongoing context. Only when you explicitly ask for help—or when the conversational analysis strongly indicates the need for clinical intervention—will it intelligently pinpoint the exact professional title you need (e.g., Psychiatrist, Psychologist, Counselor).
+Purpose: Combined with the new database filters we just added, this ensures you are only recommended to live, online, and approved doctors who match the exact title and have explicitly opted in to receive AI recommendations.

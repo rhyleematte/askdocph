@@ -1,0 +1,121 @@
+ALGORITHM: generate_response(user_input, conversation_graph, rapport_state)
+
+INPUT: 
+    - user_input: current message
+    - conversation_graph: full conversation history
+    - rapport_state: current rapport metrics
+
+OUTPUT: appropriate_response
+
+STEPS:
+
+1. ANALYZE current message:
+   - Extract emotional tone (sad, anxious, angry, hopeful, neutral)
+   - Identify topics mentioned
+   - Check for crisis keywords (suicide, self-harm, etc.)
+   - Calculate message length and complexity
+   - Detect questions the user is asking
+
+2. UPDATE rapport_state with new message:
+   - Increment turn counter
+   - Update user_opening_up_score based on self-disclosure
+   - Adjust rapport_score based on response patterns
+   - Check if stage should change (initial→building→established→deep)
+
+3. CHECK crisis_protocol:
+   IF crisis_keywords detected:
+       - Flag as CRISIS mode
+       - Prepare immediate supportive response
+       - Include helpline numbers
+       - Skip normal response generation
+   ELSE:
+       - Continue with normal flow
+
+4. RETRIEVE context from conversation_graph:
+   - Find last 3-5 related messages (topic similarity)
+   - Get emotional journey for past 10 minutes
+   - Identify any unresolved topics from follow_up_queue
+
+5. DETERMINE response_strategy based on rapport_state.stage:
+
+   IF stage == "initial":
+       strategy = {
+           "goal": "build comfort and trust",
+           "techniques": [
+               "use warm, welcoming language",
+               "ask one gentle open-ended question",
+               "validate feelings without probing",
+               "keep responses concise"
+           ],
+           "depth": "surface_level",
+           "follow_up_style": "optional"
+       }
+   
+   ELSE IF stage == "building":
+       strategy = {
+           "goal": "encourage sharing",
+           "techniques": [
+               "reflect back what you hear",
+               "normalize their experiences",
+               "ask about related feelings",
+               "show genuine curiosity"
+           ],
+           "depth": "moderate",
+           "follow_up_style": "encouraging"
+       }
+   
+   ELSE IF stage == "established":
+       strategy = {
+           "goal": "explore patterns",
+           "techniques": [
+               "help make connections between topics",
+               "ask about what helps/doesn't help",
+               "gently explore triggers",
+               "validate their insights"
+           ],
+           "depth": "deeper",
+           "follow_up_style": "probing_gently"
+       }
+   
+   ELSE IF stage == "deep":
+       strategy = {
+           "goal": "facilitate insights",
+           "techniques": [
+               "explore root causes gently",
+               "discuss coping strategies",
+               "help reframe perspectives",
+               "celebrate small victories"
+           ],
+           "depth": "profound",
+           "follow_up_style": "insight_oriented"
+       }
+   
+   ELSE IF stage == "crisis":
+       strategy = {
+           "goal": "ensure safety and provide support",
+           "techniques": [
+               "acknowledge pain without judgment",
+               "provide immediate resources",
+               "offer to stay with them in conversation",
+               "encourage professional help"
+           ],
+           "depth": "supportive_crisis",
+           "follow_up_style": "safety_focused"
+       }
+
+6. CRAFT response using strategy:
+   - Start with emotional acknowledgment (based on tone detected)
+   - Address topics mentioned (from topic analysis)
+   - Apply strategy techniques appropriately
+   - Include one follow-up question (based on follow_up_queue)
+   - Add gentle encouragement to continue sharing
+
+7. CHECK if professional_help should be suggested:
+   IF (rapport_state.rapport_score > 70 AND 
+       sensitive_topics_history.count > 3 AND
+       NOT professional_help_suggested_before):
+       - Add gentle suggestion at end of response
+       - Provide resources without pressure
+       - Mark as suggested in user_context
+
+8. RETURN final_response

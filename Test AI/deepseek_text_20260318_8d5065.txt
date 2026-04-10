@@ -1,0 +1,85 @@
+ALGORITHM: schedule_follow_ups(topic_graph, user_context, conversation_flow)
+
+INPUT:
+    - topic_graph: all topics and their relationships
+    - user_context: user preferences and history
+    - conversation_flow: current conversation dynamics
+
+OUTPUT: prioritized list of follow-up topics to address
+
+STEPS:
+
+1. SCAN topic_graph for items needing follow-up:
+
+   candidates = []
+   
+   # Topics mentioned but not explored
+   for topic in topic_graph.nodes:
+       if (topic.mentions >= 2 and 
+           topic.depth_score < 0.3 and  # not explored deeply
+           topic.last_discussed > 2_days_ago):
+           
+           candidates.append({
+               "topic": topic,
+               "reason": "mentioned_multiple_times_not_explored",
+               "urgency": 0.6,
+               "type": "exploration"
+           })
+
+   # Emotional patterns needing attention
+   for pattern in topic_graph.patterns:
+       if pattern.indicates_deterioration:
+           candidates.append({
+               "topic": pattern.root_topic,
+               "reason": "concerning_pattern_detected",
+               "urgency": 0.9,
+               "type": "intervention"
+           })
+
+   # Previous suggestions not followed up
+   if user_context.suggestions_made and not user_context.suggestions_followed:
+       candidates.append({
+           "topic": "coping_strategies",
+           "reason": "previous_suggestion_unexplored",
+           "urgency": 0.5,
+           "type": "check_in"
+       })
+
+2. PRIORITIZE candidates based on:
+
+   priority_score = (urgency * 0.4) + 
+                    (topic.relevance_to_current_mood * 0.3) +
+                    (user_readiness_score * 0.2) +
+                    (conversation_flow_appropriateness * 0.1)
+
+   Where:
+   - urgency: how critical the topic is (0-1)
+   - relevance_to_current_mood: does it match current emotional state?
+   - user_readiness_score: based on rapport_state (higher rapport = more ready)
+   - conversation_flow_appropriateness: won't disrupt natural flow
+
+3. SELECT top 2-3 candidates for next responses
+
+4. TIMING algorithm:
+
+   For each selected follow_up:
+       
+       if urgency > 0.8:
+           insert_immediately = true
+           style = "gentle_but_direct"
+       
+       elif urgency > 0.5:
+           if conversation_natural_break_detected:
+               insert_at_break = true
+               style = "casual_check"
+           else:
+               wait_for_next_turn = true
+       
+       else:  # low urgency
+           if user_introduces_related_topic:
+               connect_naturally = true
+               style = "subtle_connection"
+           else:
+               save_for_next_session = true
+
+5. RETURN prioritized_follow_ups with timing recommendations
