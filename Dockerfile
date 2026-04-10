@@ -34,8 +34,11 @@ RUN npm install && npm run prod
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache
 RUN chmod -R 775 /app/storage /app/bootstrap/cache
 
+# Make startup script executable
+RUN chmod +x /app/docker/startup.sh
+
 # Expose the port Railway expects
 EXPOSE 80
 
-# The command to start FrankenPHP and serve the site
-CMD ["frankenphp", "php-server", "-l", ":80"]
+# Use the startup script to run migrations and start the server
+CMD ["/app/docker/startup.sh"]
