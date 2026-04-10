@@ -1,8 +1,9 @@
 #!/bin/sh
 
 # Ensure the storage and bootstrap/cache directories are writable at runtime
-echo "Setting permissions..."
-chmod -R 775 /app/storage /app/bootstrap/cache
+# We use 777 here to ensure the web server (any user) has absolute access to these folders
+echo "Applying aggressive permissions..."
+chmod -R 777 /app/storage /app/bootstrap/cache
 chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
 # CLEAR caches instead of caching (caching can cause 502/500 errors if env mismatch)
@@ -33,9 +34,14 @@ php -r '
 # Run Laravel migrations automatically
 echo "Synchronizing database..."
 php artisan migrate --force
-rm -rf public/storage
-php artisan storage:link
+
+# HARD Reconstruct the storage shortcut
+echo "Bridging image storage..."
+rm -rf /app/public/storage
+ln -s /app/storage/app/public /app/public/storage
+echo "Bridge Status: "
+ls -l /app/public/storage
 
 # Start FrankenPHP and serve the application from the public folder
-echo "Starting FrankenPHP..."
+echo "Starting FrankenPHP Production Server..."
 exec frankenphp php-server -l :80 --root public
