@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (msg) {
                 msg.style.display = "block";
                 msg.classList.add("danger");
-                msg.textContent = "Server error details: " + (err.message || "Unknown error");
+                msg.textContent = (err.message || "An unexpected error occurred.");
             }
         }
     });
