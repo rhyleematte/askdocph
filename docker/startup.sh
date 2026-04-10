@@ -20,26 +20,23 @@ echo "--------------------------------------"
 # Database Connectivity Test
 echo "Testing Database Connection..."
 php -r '
-    $host = getenv("DB_HOST") ?: (getenv("MYSQLHOST") ?: (getenv("MYSQL_HOST") ?: "127.0.0.1"));
+    $host = getenv("DB_HOST") ?: (getenv("MYSQLHOST") ?: (getenv("MYSQL_HOST") ?: "mysql.railway.internal"));
     $port = getenv("DB_PORT") ?: (getenv("MYSQLPORT") ?: (getenv("MYSQL_PORT") ?: "3306"));
     $db   = getenv("DB_DATABASE") ?: (getenv("MYSQLDATABASE") ?: (getenv("MYSQL_DATABASE") ?: "forge"));
     $user = getenv("DB_USERNAME") ?: (getenv("MYSQLUSER") ?: (getenv("MYSQL_USER") ?: "forge"));
     $pass = getenv("DB_PASSWORD") ?: (getenv("MYSQLPASSWORD") ?: (getenv("MYSQL_PASSWORD") ?: ""));
 
-    echo "Attempting to connect to $host:$port...\n";
+    if ($host === "mysql.railway.internal") {
+        echo "🚨 Warning: Using hardcoded internal host fallback.\n";
+    }
+
+    echo "Attempting to connect to $host:$port as user \"$user\" to database \"$db\"...\n";
 
     try {
         $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db", $user, $pass, [PDO::ATTR_TIMEOUT => 5]);
         echo "✅ Connection Successful!\n";
     } catch (Exception $e) {
         echo "❌ Connection Failed: " . $e->getMessage() . "\n";
-        echo "Attempting Fallback to mysql.railway.internal...\n";
-        try {
-             $pdo = new PDO("mysql:host=mysql.railway.internal;port=3306;dbname=$db", $user, $pass, [PDO::ATTR_TIMEOUT => 2]);
-             echo "✅ Fallback Connection Successful!\n";
-        } catch (Exception $e2) {
-             echo "❌ Fallback Failed too.\n";
-        }
     }
 '
 
