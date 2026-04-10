@@ -38,4 +38,28 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Throwable
+     */
+    public function render($request, Throwable $e)
+    {
+        if ($request->expectsJson()) {
+            return response()->json([
+                'ok'      => false,
+                'message' => 'DEBUG ERROR: ' . $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
+                'trace'   => substr($e->getTraceAsString(), 0, 500) // First 500 chars 
+            ], 500);
+        }
+
+        return parent::render($request, $e);
+    }
 }
