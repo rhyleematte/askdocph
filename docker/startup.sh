@@ -15,22 +15,19 @@ php artisan route:clear
 # Database Connectivity Test
 echo "Testing Database Connection..."
 php -r '
-    $host = getenv("DB_HOST") ?: "127.0.0.1";
-    $port = getenv("DB_PORT") ?: "3306";
-    $db   = getenv("DB_DATABASE") ?: "forge";
-    $user = getenv("DB_USERNAME") ?: "forge";
-    $pass = getenv("DB_PASSWORD") ?: "";
-    $url  = getenv("DATABASE_URL");
+    $host = getenv("DB_HOST") ?: (getenv("MYSQLHOST") ?: "127.0.0.1");
+    $port = getenv("DB_PORT") ?: (getenv("MYSQLPORT") ?: "3306");
+    $db   = getenv("DB_DATABASE") ?: (getenv("MYSQLDATABASE") ?: "forge");
+    $user = getenv("DB_USERNAME") ?: (getenv("MYSQLUSER") ?: "forge");
+    $pass = getenv("DB_PASSWORD") ?: (getenv("MYSQLPASSWORD") ?: "");
 
-    echo "Attempting to connect to $host:$port (via variables)...\n";
-    if ($url) echo "DATABASE_URL detected.\n";
+    echo "Attempting to connect to $host:$port...\n";
 
     try {
         $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db", $user, $pass, [PDO::ATTR_TIMEOUT => 5]);
         echo "✅ Connection Successful!\n";
     } catch (Exception $e) {
         echo "❌ Connection Failed: " . $e->getMessage() . "\n";
-        echo "Diagnostic: Ensure DB_HOST is set to your Railway internal host, NOT 127.0.0.1.\n";
     }
 '
 
