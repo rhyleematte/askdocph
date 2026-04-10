@@ -15,11 +15,11 @@ php artisan route:clear
 # Database Connectivity Test
 echo "Testing Database Connection..."
 php -r '
-    $host = getenv("DB_HOST") ?: (getenv("MYSQLHOST") ?: "127.0.0.1");
-    $port = getenv("DB_PORT") ?: (getenv("MYSQLPORT") ?: "3306");
-    $db   = getenv("DB_DATABASE") ?: (getenv("MYSQLDATABASE") ?: "forge");
-    $user = getenv("DB_USERNAME") ?: (getenv("MYSQLUSER") ?: "forge");
-    $pass = getenv("DB_PASSWORD") ?: (getenv("MYSQLPASSWORD") ?: "");
+    $host = getenv("DB_HOST") ?: (getenv("MYSQLHOST") ?: (getenv("MYSQL_HOST") ?: "127.0.0.1"));
+    $port = getenv("DB_PORT") ?: (getenv("MYSQLPORT") ?: (getenv("MYSQL_PORT") ?: "3306"));
+    $db   = getenv("DB_DATABASE") ?: (getenv("MYSQLDATABASE") ?: (getenv("MYSQL_DATABASE") ?: "forge"));
+    $user = getenv("DB_USERNAME") ?: (getenv("MYSQLUSER") ?: (getenv("MYSQL_USER") ?: "forge"));
+    $pass = getenv("DB_PASSWORD") ?: (getenv("MYSQLPASSWORD") ?: (getenv("MYSQL_PASSWORD") ?: ""));
 
     echo "Attempting to connect to $host:$port...\n";
 
