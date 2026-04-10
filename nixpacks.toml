@@ -1,10 +1,10 @@
-# Force PHP and Node providers
+# Final refined configuration for database support
 providers = ["php", "node"]
 
 [variables]
 NIXPACKS_PHP_VERSION = '8.2'
-# Explicitly list every extension Laravel needs to talk to the database and process icons
-NIXPACKS_PHP_EXTENSIONS = 'pdo_mysql, mbstring, bcmath, xml, curl, zip, dom, fileinfo, filter, gd, hash, iconv, openssl, pcre, pdo, session, tokenizer'
+# Focus strictly on missing extensions. Built-ins are removed to prevent conflicts.
+NIXPACKS_PHP_EXTENSIONS = 'pdo_mysql, mbstring, bcmath, xml, curl, zip, gd, intl'
 
 [phases.install]
 cmds = ["composer install --no-dev --ignore-platform-reqs", "npm install"]
