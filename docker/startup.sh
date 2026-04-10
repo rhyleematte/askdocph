@@ -26,8 +26,9 @@ php -r '
     $user = getenv("DB_USERNAME") ?: (getenv("MYSQLUSER") ?: (getenv("MYSQL_USER") ?: "forge"));
     $pass = getenv("DB_PASSWORD") ?: (getenv("MYSQLPASSWORD") ?: (getenv("MYSQL_PASSWORD") ?: ""));
 
-    if ($host === "mysql.railway.internal") {
-        echo "🚨 Warning: Using hardcoded internal host fallback.\n";
+    if (empty(getenv("DB_PASSWORD")) && empty(getenv("MYSQLPASSWORD")) && empty(getenv("MYSQL_PASSWORD"))) {
+        echo "🚨 WARNING: NO DATABASE PASSWORD FOUND in environment variables!\n";
+        echo "   Please Link your MySQL service to the AskDocPH service in the Railway Dashboard.\n";
     }
 
     echo "Attempting to connect to $host:$port as user \"$user\" to database \"$db\"...\n";
