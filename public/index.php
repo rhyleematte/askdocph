@@ -1,5 +1,23 @@
 <?php
 
+/**
+ * GOD MODE DIAGNOSTICS
+ * Captures errors before the framework even starts.
+ */
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+set_exception_handler(function($e) {
+    header('Content-Type: application/json');
+    http_response_code(500);
+    die(json_encode([
+        'BOOT_LEVEL_ERROR' => true,
+        'error_type' => get_class($e),
+        'message' => $e->getMessage(),
+        'file' => $e->getFile() . ':' . $e->getLine(),
+        'trace' => substr($e->getTraceAsString(), 0, 1000)
+    ], JSON_PRETTY_PRINT));
+});
+
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
