@@ -115,35 +115,26 @@ public function signupAjax(Request $request)
             'password.numbers' => 'Password must contain at least one number.',
         ]);
 
-        try {
-            $user = User::create([
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'username' => $data['username'],
-                'fname' => $data['fname'],
-                'mname' => $data['mname'] ?? null,
-                'lname' => $data['lname'],
-                'gender' => $data['gender'],
-                'bday' => $data['bday'],
-                'role' => 'user',
-                'doctor_status' => 'none',
-                'profile_photo' => 'profiles/default.png',
-            ]);
+        $user = User::create([
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+            'username' => $data['username'],
+            'fname' => $data['fname'],
+            'mname' => $data['mname'] ?? null,
+            'lname' => $data['lname'],
+            'gender' => $data['gender'],
+            'bday' => $data['bday'],
+            'role' => 'user',
+            'doctor_status' => 'none',
+            'profile_photo' => 'profiles/default.png',
+        ]);
 
-            return response()->json([
-                'ok' => true,
-                'message' => 'Account created successfully!',
-                'redirect' => route('login'),
-                'user_id' => $user->id,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Signup failed: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
-            
-            return response()->json([
-                'ok' => false,
-                'message' => 'Signup failed: ' . $e->getMessage(),
-            ], 500);
-        }
+        return response()->json([
+            'ok' => true,
+            'message' => 'Account created successfully!',
+            'redirect' => route('login'),
+            'user_id' => $user->id,
+        ]);
     }
 
 }
