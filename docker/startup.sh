@@ -1,5 +1,9 @@
 #!/bin/sh
 
+echo "--- Pre-Flight Check ---"
+echo "DB_CONNECTION: $(php -r 'echo getenv("DB_CONNECTION") ?: "mysql (default)";')"
+echo "------------------------"
+
 # Ensure the storage and bootstrap/cache directories are writable at runtime
 echo "Setting permissions..."
 chmod -R 775 /app/storage /app/bootstrap/cache
@@ -28,7 +32,6 @@ php -r '
 
     if (empty(getenv("DB_PASSWORD")) && empty(getenv("MYSQLPASSWORD")) && empty(getenv("MYSQL_PASSWORD"))) {
         echo "🚨 WARNING: NO DATABASE PASSWORD FOUND in environment variables!\n";
-        echo "   Please Link your MySQL service to the AskDocPH service in the Railway Dashboard.\n";
     }
 
     echo "Attempting to connect to $host:$port as user \"$user\" to database \"$db\"...\n";

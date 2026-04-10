@@ -41,4 +41,4 @@ RUN chmod +x /app/docker/startup.sh
 EXPOSE 80
 
 # Use the startup script to run migrations and start the server
-CMD ["/app/docker/startup.sh"]
+ENTRYPOINT ["/app/docker/startup.sh"]
