@@ -18,6 +18,9 @@ RUN install-php-extensions pdo_mysql bcmath gd intl zip opcache mbstring openssl
 # Set working directory
 WORKDIR /app
 
+# Copy custom PHP configuration
+COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
 # Copy application files
 COPY . .
 

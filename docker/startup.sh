@@ -6,11 +6,11 @@ echo "Applying aggressive permissions..."
 chmod -R 777 /app/storage /app/bootstrap/cache
 chown -R www-data:www-data /app/storage /app/bootstrap/cache
 
-# CLEAR caches instead of caching (caching can cause 502/500 errors if env mismatch)
-echo "Ensuring fresh environment..."
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
+# NITRO BOOST: Cache everything for production speed
+echo "Optimizing application for production..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 
 # Database Connectivity Test
 echo "Testing Database Connection..."

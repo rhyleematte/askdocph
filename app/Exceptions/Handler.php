@@ -38,20 +38,4 @@ class Handler extends ExceptionHandler
             //
         });
     }
-
-    public function render($request, Throwable $e)
-    {
-        // Don't turn 404s into 500 JSONs
-        if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
-            return parent::render($request, $e);
-        }
-
-        return response()->json([
-            'ok'      => false,
-            'error_type' => get_class($e),
-            'message' => $e->getMessage(),
-            'file'    => $e->getFile() . ':' . $e->getLine(),
-            'debug_trace' => substr($e->getTraceAsString(), 0, 1000)
-        ], 500);
-    }
 }
