@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (msg) {
                 msg.style.display = "block";
                 msg.classList.add("danger");
-                msg.textContent = "Network error. Please try again.";
+                msg.textContent = "Server error details: " + (err.message || "Unknown error");
             }
         }
     });
