@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 exitArchivedMode();
                 loadConversations();
                 if (!convPollInterval) {
-                    convPollInterval = setInterval(() => loadConversations(isArchivedMode), 5000);
+                    convPollInterval = setInterval(() => loadConversations(isArchivedMode), 30000);
                 }
             } else {
                 clearInterval(convPollInterval);
@@ -361,8 +361,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     const newChatObj = {
                         element: chatBox,
                         lastMsgId: msg.id,
-                        pollInterval: setInterval(() => pollForMessages(chatBox, msg.conversation_id), 3000),
-                        typingInterval: setInterval(() => pollForTyping(chatBox, msg.conversation_id), 3000),
+                        pollInterval: setInterval(() => pollForMessages(chatBox, msg.conversation_id), 10000),
+                        typingInterval: setInterval(() => pollForTyping(chatBox, msg.conversation_id), 20000),
                         isTyping: false
                     };
                     openChats.set(msg.conversation_id, newChatObj);
@@ -407,8 +407,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const chatObj = {
             element: chatBox,
             lastMsgId: 0,
-            pollInterval: conv.id ? setInterval(() => pollForMessages(chatBox, conv.id), 3000) : null,
-            typingInterval: conv.id ? setInterval(() => pollForTyping(chatBox, conv.id), 3000) : null,
+            pollInterval: conv.id ? setInterval(() => pollForMessages(chatBox, conv.id), 10000) : null,
+            typingInterval: conv.id ? setInterval(() => pollForTyping(chatBox, conv.id), 20000) : null,
             isTyping: false
         };
         openChats.set(convId, chatObj);
@@ -634,8 +634,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     const newChatObj = {
                         element: chatBox,
                         lastMsgId: 0,
-                        pollInterval: setInterval(() => pollForMessages(chatBox, data.conversation_id), 3000),
-                        typingInterval: setInterval(() => pollForTyping(chatBox, data.conversation_id), 3000),
+                        pollInterval: setInterval(() => pollForMessages(chatBox, data.conversation_id), 10000),
+                        typingInterval: setInterval(() => pollForTyping(chatBox, data.conversation_id), 20000),
                         isTyping: false
                     };
                     openChats.set(data.conversation_id, newChatObj);
@@ -687,7 +687,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     updateMessengerBadge();
-    setInterval(updateMessengerBadge, 10000);
+    setInterval(updateMessengerBadge, 30000);
 
     // ── Messenger Settings Logic ──────────────────────────────────
     const settingsBtn = document.querySelector('#messenger-settings-btn');

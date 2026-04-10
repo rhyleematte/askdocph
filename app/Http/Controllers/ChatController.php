@@ -20,6 +20,10 @@ class ChatController extends Controller
         // 1. Get existing conversations (not deleted for this user)
         $query = $user->conversations()
             ->with(['users', 'latestMessage'])
+            ->withCount(['messages as unread_messages_count' => function($q) use ($user) {
+                $q->where('sender_user_id', '!=', $user->id)
+                  ->whereNull('read_at');
+            }])
             ->wherePivot('deleted_at', null);
 
         // Filter by archived status
@@ -62,10 +66,8 @@ class ChatController extends Controller
         $formattedConversations = $conversations->map(function ($conv) use ($user) {
             $otherUser = $conv->users->where('id', '!=', $user->id)->first();
             
-            $unreadCount = Message::where('conversation_id', $conv->id)
-                ->where('sender_user_id', '!=', $user->id)
-                ->whereNull('read_at')
-                ->count();
+            // Optimization: The unread count is now pre-calculated or efficiently counted
+            $unreadCount = $conv->unread_messages_count ?? 0;
 
             return [
                 'id' => $conv->id,
@@ -77,7 +79,7 @@ class ChatController extends Controller
                     'is_online' => $otherUser->isOnline(),
                 ] : null,
                 'latest_message' => $conv->latestMessage,
-                'unread_count' => $unreadCount,
+                'unread_count' => (int) $unreadCount,
                 'is_conversation' => true
             ];
         });
@@ -286,36 +288,22 @@ class ChatController extends Controller
     {
         $user = Auth::user();
         
+        // 1. Efficient Notification Count
         $notifCount = \App\Models\Notification::where('user_id', $user->id)
             ->whereNull('read_at')
             ->count();
             
-        // Use EXACT same logic as getConversations to ensure badge matches drawer
-        $conversations = $user->conversations()
-            ->with(['users'])
-            ->wherePivot('deleted_at', null)
-            ->orderBy('conversations.updated_at', 'desc')
-            ->get();
-
-        $alreadyPaired = [];
-        $totalMsgCount = 0;
-
-        foreach ($conversations as $conv) {
-            $otherUser = $conv->users->where('id', '!=', $user->id)->first();
-            
-            // Mirror drawers visibility rules
-            if (!$otherUser) continue; 
-            
-            // Deduplication: Only count the same person once (the most recent one)
-            if (isset($alreadyPaired[$otherUser->id])) continue;
-            $alreadyPaired[$otherUser->id] = true;
-
-            // Add up unread messages for this visible conversation
-            $totalMsgCount += $conv->messages()
-                ->where('sender_user_id', '!=', $user->id)
-                ->whereNull('read_at')
-                ->count();
-        }
+        // 2. Efficient Message Count (One query instead of N+1)
+        // We count all unread messages in conversations that this user hasn't deleted.
+        $totalMsgCount = Message::where('sender_user_id', '!=', $user->id)
+            ->whereNull('read_at')
+            ->whereIn('conversation_id', function($query) use ($user) {
+                $query->select('conversation_id')
+                    ->from('conversation_participants')
+                    ->where('user_id', $user->id)
+                    ->whereNull('deleted_at');
+            })
+            ->count();
             
         return response()->json([
             'notifications' => $notifCount,

@@ -204,6 +204,6 @@
 
     // Initial fetch + polling
     fetchNotifications();
-    setInterval(fetchNotifications, 10000); // Increased frequency for "Auto Update"
+    setInterval(fetchNotifications, 30000); // Facebook standard: slow background polling
   });
 })();
