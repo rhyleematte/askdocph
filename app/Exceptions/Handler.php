@@ -39,7 +39,6 @@ class Handler extends ExceptionHandler
         });
     }
 
-}
     public function render($request, Throwable $e)
     {
         return response()->json([
@@ -50,3 +49,4 @@ class Handler extends ExceptionHandler
             'debug_trace' => substr($e->getTraceAsString(), 0, 1000)
         ], 500);
     }
+}
