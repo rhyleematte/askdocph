@@ -71,7 +71,7 @@ public function signupAjax(Request $request)
             'lname' => ['required', 'string', 'min:2', 'max:50'],
             'gender' => ['required', 'in:male,female,other,prefer_not_to_say'],
             'bday' => ['required', 'date', 'before:today'],
-            'email' => ['required', 'email:rfc,dns', 'unique:users,email', 'max:255'],
+            'email' => ['required', 'email:rfc', 'unique:users,email', 'max:255'],
             'username' => ['required', 'min:3', 'max:20', 'alpha_dash', 'unique:users,username'],
             'password' => ['required', 'confirmed',
                 Password::min(8)->mixedCase()->numbers()
