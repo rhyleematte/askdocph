@@ -33,6 +33,7 @@ php -r '
 # Run Laravel migrations automatically
 echo "Synchronizing database..."
 php artisan migrate --force
+php artisan storage:link --force
 
 # Start FrankenPHP and serve the application from the public folder
 echo "Starting FrankenPHP..."
