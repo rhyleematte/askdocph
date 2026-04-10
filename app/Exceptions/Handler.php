@@ -40,32 +40,15 @@ class Handler extends ExceptionHandler
     }
 
 }
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $e
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Throwable
-     */
     public function render($request, Throwable $e)
     {
-        if ($request->expectsJson() || $request->is('api/*') || $request->is('signup-ajax')) {
-            if ($e instanceof \Illuminate\Validation\ValidationException) {
-                return response()->json([
-                    'ok' => false,
-                    'message' => 'Validation Error',
-                    'errors' => $e->errors(),
-                ], 422);
-            }
-
+        if ($request->expectsJson() || $request->is('api/*') || $request->is('signup-ajax') || $request->is('profile/*')) {
             return response()->json([
                 'ok'      => false,
-                'message' => 'DEBUG ERROR: ' . $e->getMessage(),
-                'file'    => $e->getFile(),
-                'line'    => $e->getLine(),
-                'trace'   => substr($e->getTraceAsString(), 0, 500) 
+                'error_type' => get_class($e),
+                'message' => $e->getMessage(),
+                'file'    => $e->getFile() . ':' . $e->getLine(),
+                'debug_trace' => substr($e->getTraceAsString(), 0, 500)
             ], 500);
         }
 
