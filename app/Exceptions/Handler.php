@@ -42,15 +42,11 @@ class Handler extends ExceptionHandler
 }
     public function render($request, Throwable $e)
     {
-        if ($request->expectsJson() || $request->is('api/*') || $request->is('signup-ajax') || $request->is('profile/*')) {
-            return response()->json([
-                'ok'      => false,
-                'error_type' => get_class($e),
-                'message' => $e->getMessage(),
-                'file'    => $e->getFile() . ':' . $e->getLine(),
-                'debug_trace' => substr($e->getTraceAsString(), 0, 500)
-            ], 500);
-        }
-
-        return parent::render($request, $e);
+        return response()->json([
+            'ok'      => false,
+            'error_type' => get_class($e),
+            'message' => $e->getMessage(),
+            'file'    => $e->getFile() . ':' . $e->getLine(),
+            'debug_trace' => substr($e->getTraceAsString(), 0, 1000)
+        ], 500);
     }
