@@ -1,9 +1,14 @@
-# Use the official Nixpacks variable to hint the PHP version
+# Explicitly tell Nixpacks to use both PHP and Node
+providers = ["php", "node"]
+
 [variables]
 NIXPACKS_PHP_VERSION = '8.1'
 
+[phases.setup]
+nixPkgs = ["php", "nodejs", "composer"]
+
 [phases.install]
-cmds = ["composer install --no-dev", "npm install"]
+cmds = ["composer install --no-dev --ignore-platform-reqs", "npm install"]
 
 [phases.build]
 cmds = ["npm run prod"]
