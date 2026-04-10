@@ -50,7 +50,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
-        if ($request->expectsJson()) {
+        if ($request->expectsJson() || $request->is('signup-ajax')) {
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                return response()->json([
+                    'ok' => false,
+                    'message' => 'Validation Error',
+                    'errors' => $e->errors(),
+                ], 422);
+            }
+
             return response()->json([
                 'ok'      => false,
                 'message' => 'DEBUG ERROR: ' . $e->getMessage(),
