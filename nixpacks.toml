@@ -1,6 +1,6 @@
-# Define the build phases for Railway (Nixpacks)
-[phases.setup]
-nixPkgs = ["php", "nodejs", "composer"]
+# Use the official Nixpacks variable to hint the PHP version
+[variables]
+NIXPACKS_PHP_VERSION = '8.1'
 
 [phases.install]
 cmds = ["composer install --no-dev", "npm install"]
